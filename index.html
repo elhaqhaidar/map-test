@@ -61,8 +61,8 @@
         map.on('style.load', () => {
             map.setFog({}); // Set the default atmosphere style, since satellite-v9 doesn't include atmosphere by default.
         });
-        let layer1Visible = true;
-        let layer2Visible = true;
+        let layer1Visible = false;
+        let layer2Visible = false;
         map.on('load', () => {
             map.addSource('elhaqh.60kkelua', {
                 'type': 'raster',
@@ -74,7 +74,7 @@
                 'source': 'elhaqh.60kkelua',
                 'type': 'raster',
                 'paint': {
-                    'raster-opacity': layer1Visible ? 0.8 : 0 // Set opacity based on layer visibility
+                    'raster-opacity': layer1Visible ? 1 : 0 // Set opacity based on layer visibility
                 }
             });
 
@@ -88,18 +88,34 @@
                 'source': 'elhaqh.4l9l2pmj',
                 'type': 'raster',
                 'paint': {
-                    'raster-opacity': layer2Visible ? 0.5 : 0 // Set opacity based on layer visibility
+                    'raster-opacity': layer2Visible ? 1 : 0 // Set opacity based on layer visibility
                 }
             });
 
             document.getElementById('toggleLayer1').addEventListener('click', function() {
                 layer1Visible = !layer1Visible; // Toggle layer visibility
-                map.setPaintProperty('1630', 'raster-opacity', layer1Visible ? 0.8 : 0); // Set opacity based on layer visibility
+                map.setPaintProperty('1630', 'raster-opacity', layer1Visible ? 1 : 0); // Set opacity based on layer visibility
             });
 
             document.getElementById('toggleLayer2').addEventListener('click', function() {
                 layer2Visible = !layer2Visible; // Toggle layer visibility
-                map.setPaintProperty('1838', 'raster-opacity', layer2Visible ? 0.5 : 0); // Set opacity based on layer visibility
+                map.setPaintProperty('1838', 'raster-opacity', layer2Visible ? 1 : 0); // Set opacity based on layer visibility
+            });
+            
+            map.addSource('elhaqh.5a89arii', {
+                'type': 'geojson',
+                'data': 'inundation-9.geojson'
+            });
+            map.addLayer({
+                'id': 'inundation-9',
+                'type': 'fill',
+                'source': 'elhaqh.5a89arii',
+                'layout': {},
+                'paint': {
+                    'fill-color': '#364d9d',
+                    'fill-opacity': 0.5
+                },
+                'filter': ['==', '$type', 'Polygon']
             });
         });
     </script>
