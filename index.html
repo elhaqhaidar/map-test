@@ -7,118 +7,18 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .toggle-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1;
-            background-color: #ffffff;
-            border: 1px solid #ccc;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        #toggleLayer1 {
-            top: 10px;
-            right: 10px;
-        }
-
-        #toggleLayer2 {
-            top: 40px;
-            right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
     <div id="map"></div>
-    <div id="toggleLayer1" class="toggle-btn">Toggle 1630</div>
-    <div id="toggleLayer2" class="toggle-btn">Toggle 1838</div>
-    <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiZWxoYXFoIiwiYSI6ImNsdDNhcThkcTF1cHEya3JvbHY4eDJtaWIifQ.JFJvJb6fqR8On7uTnx4HVA';
-        const map = new mapboxgl.Map({
-            container: 'map', // container ID
-            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-            style: 'mapbox://styles/mapbox/satellite-v9', // style URL
-            projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
-            center: [-71.058884, 42.360081], // starting position [lng, lat]
-            zoom: 12 // starting zoom
-        });
-        map.on('style.load', () => {
-            map.setFog({}); // Set the default atmosphere style, since satellite-v9 doesn't include atmosphere by default.
-        });
-        let layer1Visible = false;
-        let layer2Visible = false;
-        map.on('load', () => {
-            map.addSource('elhaqh.60kkelua', {
-                'type': 'raster',
-                'url': 'mapbox://elhaqh.60kkelua'
-            });
-
-            map.addLayer({
-                'id': '1630',
-                'source': 'elhaqh.60kkelua',
-                'type': 'raster',
-                'paint': {
-                    'raster-opacity': layer1Visible ? 1 : 0 // Set opacity based on layer visibility
-                }
-            });
-
-            map.addSource('elhaqh.4l9l2pmj', {
-                'type': 'raster',
-                'url': 'mapbox://elhaqh.4l9l2pmj'
-            });
-
-            map.addLayer({
-                'id': '1838',
-                'source': 'elhaqh.4l9l2pmj',
-                'type': 'raster',
-                'paint': {
-                    'raster-opacity': layer2Visible ? 1 : 0 // Set opacity based on layer visibility
-                }
-            });
-
-            document.getElementById('toggleLayer1').addEventListener('click', function() {
-                layer1Visible = !layer1Visible; // Toggle layer visibility
-                map.setPaintProperty('1630', 'raster-opacity', layer1Visible ? 1 : 0); // Set opacity based on layer visibility
-            });
-
-            document.getElementById('toggleLayer2').addEventListener('click', function() {
-                layer2Visible = !layer2Visible; // Toggle layer visibility
-                map.setPaintProperty('1838', 'raster-opacity', layer2Visible ? 1 : 0); // Set opacity based on layer visibility
-            });
-            
-            map.addSource('elhaqh.5a89arii', {
-                'type': 'geojson',
-                'data': 'inundation-9.geojson'
-            });
-            map.addLayer({
-                'id': 'inundation-9',
-                'type': 'fill',
-                'source': 'elhaqh.5a89arii',
-                'layout': {},
-                'paint': {
-                    'fill-color': '#364d9d',
-                    'fill-opacity': 0.5
-                },
-                'filter': ['==', '$type', 'Polygon']
-            });
-        });
-    </script>
+    <div id="yearslider" class="slidecontainer">
+        <input type="range" min="0" max="3" value="0" class="slider" id="layerSlider">
+      </div>
+   <!-- <div id="toggleLayer1" class="toggle-btn">Toggle 1630</div>
+    <div id="toggleLayer2" class="toggle-btn">Toggle 1838</div> -->
+    <div id="layerText"></div> <!-- Added element to display layer ID -->
+    <script type="module" src="./global.js"> </script>
 
 </body>
 
